@@ -24,10 +24,11 @@ import android.graphics.Paint.Align;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
+import android.view.View;
 
 import one.jmg.minesweeper2d.engine.MineField;
 
-public class MineSweeperView extends SurfaceView {
+public class MineSweeperView extends View {
 	private final Paint mPaint;
 	private MineField mf = null;
 	private Target target = null;
@@ -35,18 +36,10 @@ public class MineSweeperView extends SurfaceView {
 	private int width;
 	private int height;
 
-	public MineSweeperView(Context context) {
-		this(context, null, 0);
-	}
-
 	public MineSweeperView(Context context, AttributeSet attrs) {
-		this(context, attrs, 0);
-	}
+        super(context, attrs);
 
-	public MineSweeperView(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs, defStyle);
-
-		mPaint = new Paint();
+        mPaint = new Paint();
 		mPaint.setColor(Color.WHITE);
 		mPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
 		mPaint.setStrokeWidth(2);
@@ -54,7 +47,6 @@ public class MineSweeperView extends SurfaceView {
 
 		mf = new MineField(9,9,10);
 		target = new Target(0,0);
-        this.setWillNotDraw(false);
 	}
 
     @Override
@@ -105,11 +97,12 @@ public class MineSweeperView extends SurfaceView {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            int tX = ((int) event.getX()) / (getWidth() / 5);
-            int tY = ((int) event.getY()) / (getHeight() / 5);
+            int tX = ((int) event.getX()) / (getWidth() / 9);
+            int tY = ((int) event.getY()) / (getHeight() / 9);
             target.setX(tX);
             target.setY(tY);
             reveal();
+            invalidate();
         }
         return super.onTouchEvent(event);
     }
