@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Joe George
+ * Copyright (C) 2024 Joe George
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,6 @@ import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.SurfaceView;
 import android.view.View;
 
 import one.jmg.minesweeper2d.engine.MineField;
@@ -70,8 +69,8 @@ public class MineSweeperView extends View {
 
         } else {
             canvas.drawColor(Color.BLACK);
-            width = canvas.getWidth();
-            height = canvas.getHeight();
+            width = getWidth();
+            height = getHeight();
 
             mPaint.setColor(Color.WHITE);
             canvas.drawLine((int)(width*.75), 0, (int)(width*.75), height, mPaint);
@@ -97,20 +96,13 @@ public class MineSweeperView extends View {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            int tX = ((int) event.getX()) / (getWidth() / 9);
-            int tY = ((int) event.getY()) / (getHeight() / 9);
-            target.setX(tX);
-            target.setY(tY);
+            target.setX((int) event.getX());
+            target.setY((int) event.getY());
             reveal();
             invalidate();
         }
         return super.onTouchEvent(event);
     }
-
-
-    public Target getTarget() {
-		return this.target;
-	}
 
 	public void reveal() {
 		int col = (int)(target.getX() / ((width*.75) / 9)) + 1;
